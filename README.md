@@ -2,7 +2,7 @@
 
 ##### Run a dns proxy in docker with wildcard host support
 
-This is intended to be used within (but not limited to) a local docker development environment, typically in combination with some type of reverse proxy that supports virtualhosts like nginx. In this configuration, `docker-dns` allows you to simplify local container access by automatically setting up easier doamins like `hello.docker.local`
+This is intended to be used within (but not limited to) a local docker development environment, typically in combination with some type of reverse proxy that supports virtualhosts like nginx. In this configuration, `docker-dns` allows you to simplify local container access by automatically setting up easier doamins like `hello.docker.dev`
 
 #### Quickstart:
 
@@ -19,8 +19,8 @@ Once this container is running, configure your system to route DNS queries throu
 -  `-e HOSTS_FILE=${FILE:-/etc/docker-dns/hosts} -v $FILE:$FILE` sets the host file to read for resolving queries locally. This should look like a typical /etc/hosts file, but additionally supports wildcard entries. The default hosts file included in this image is shown below, but you are free to mount your own:
 
 	```
-	127.0.0.1 		*.docker.local
-	192.168.99.100 	*.rancher.local
+	127.0.0.1 		*.docker.dev
+	192.168.99.100 	*.rancher.dev
 	```
 
 > Note:
@@ -41,9 +41,9 @@ Once this container is running, configure your system to route DNS queries throu
 > `sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist`
 >
 
-Now, you can start up any container with `VIRTUAL_HOST` set to a `docker.local` domain and access it from the browser without having to expose/keep track of all the different ports you're using!
+Now, you can start up any container with `VIRTUAL_HOST` set to a `docker.dev` domain and access it from the browser without having to expose/keep track of all the different ports you're using!
 
-`docker run -d -p 80 -e VIRTUAL_HOST=hello.docker.local -e VIRTUAL_PORT=80 tutum/hello-world && open http://hello.docker.local`
+`docker run -d -p 80 -e VIRTUAL_HOST=hello.docker.dev -e VIRTUAL_PORT=80 tutum/hello-world && open http://hello.docker.dev`
 
 #### \#winning
 
