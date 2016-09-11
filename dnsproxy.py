@@ -30,7 +30,7 @@ def main():
     parser.add_option('-H', '--host', dest='host', default='127.0.0.1', help='specify the address to listen on')
     parser.add_option('-p', '--port', dest='port', default=53, type='int', help='specify the port to listen on')
     parser.add_option('-s', '--server', dest='dns_server', metavar='SERVER', help='specify the delegating dns server')
-    parser.add_option('-C', '--no-cache', dest='disable_cache', default=False, action='store_true', help='disable dns cache')
+    parser.add_option('-C', '--no-cache', dest='disable_cache', default=True, action='store_true', help='disable dns cache')
 
     opts, args = parser.parse_args()
     if not opts.dns_server:
@@ -106,9 +106,11 @@ class DNSProxyHandler(BaseRequestHandler):
         reqdata, sock = self.request
         req = parse_dns_message(reqdata)
         q = req.question
+        print 'requesting', q.name
         if q.type_ in (DNS_TYPE_A, DNS_TYPE_AAAA) and (q.class_ == DNS_CLASS_IN):
             for packed_ip, host in self.server.host_lines:
                 if q.name.endswith(host):
+                    print 'returning', chr(len(packed_ip)), packed_ip, host
                     # header, qd=1, an=1, ns=0, ar=0
                     rspdata = reqdata[:2] + '\x81\x80\x00\x01\x00\x01\x00\x00\x00\x00'
                     rspdata += reqdata[12:q.end_offset]
@@ -119,8 +121,8 @@ class DNSProxyHandler(BaseRequestHandler):
                         rspdata += '\x00\x01'   # 1 for ip4
                     else:
                         rspdata += '\x00\x1c'   # 28 for ip6
-                    # class: 1, ttl: 2000(0x000007d0)
-                    rspdata += '\x00\x01\x00\x00\x07\xd0'
+                    # class: 1, ttl: 1(0x00000001)
+                    rspdata += '\x00\x01\x00\x00\x00\x01'
                     rspdata += '\x00' + chr(len(packed_ip)) # rd_len
                     rspdata += packed_ip
                     sock.sendto(rspdata, self.client_address)
@@ -178,9 +180,9 @@ def load_hosts(hosts_file):
     with open(hosts_file) as hosts_in:
         hostlines = []
         for line in hosts_in:
-            print "line " + line
             hostline = wildcard_line(line)
             if hostline:
+                print "adding host " , hostline
                 hostlines.append(hostline)
         return hostlines
 

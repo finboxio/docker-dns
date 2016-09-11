@@ -1,0 +1,9 @@
+version: '2'
+services:
+  docker-dns:
+    build: .
+    tty: true
+    stdin_open: true
+    restart: always
+    ports:
+      - 53:53/udp
