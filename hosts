@@ -1,2 +1,2 @@
-127.0.0.1 *.docker.dev
-192.168.99.100 *.rancher.dev
+127.0.0.1 *.docker
+192.168.99.100 *.rancher
