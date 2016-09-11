@@ -25,7 +25,7 @@ Once this container is running, configure your system to route DNS queries throu
 
 > Note:
 >
-> The second is really only effective if you have a rancher host running in a virtual machine with the IP 192.168.99.100. I do some development against a local rancher cluster spun up via [mac-ranch](https://github.com/finboxio/mac-ranch), so this is actually a reasonably useful default for me.
+> The second entry is really only effective if you have a rancher host running in a virtual machine with the IP 192.168.99.100. I do some development against a local rancher cluster spun up via [mac-ranch](https://github.com/finboxio/mac-ranch), so this is actually a reasonably useful default for me.
 >
 
 #### Using with a reverse proxy
