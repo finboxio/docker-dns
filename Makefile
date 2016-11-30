@@ -20,6 +20,9 @@ DOCKER_IMAGE := $(shell if [[ "$(DOCKER_REGISTRY)" ]]; then echo $(DOCKER_REGIST
 DOCKER_VERSION := $(shell echo "$(DOCKER_IMAGE):$(BUILD_VERSION)")
 DOCKER_LATEST := $(shell if [[ "$(VERSION_DIRTY)" -gt "0" ]] || [[ "$(GIT_DIRTY)" == "yes" ]]; then echo "$(DOCKER_IMAGE):dev"; else echo $(DOCKER_IMAGE):latest; fi)
 
+dev:
+	@docker-compose up --build
+
 info:
 	@echo "git branch:      $(GIT_BRANCH)"
 	@echo "git commit:      $(GIT_COMMIT)"

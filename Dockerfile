@@ -1,11 +1,15 @@
-FROM alpine:3.4
+FROM mhart/alpine-node
 
-RUN apk add --no-cache python
-
+ENV NODE_ENV=production
 EXPOSE 53/udp
 
-ADD dns*.py /
-ADD entrypoint.sh /entrypoint.sh
-ADD hosts /etc/docker-dns/hosts
+ADD package.json /tmp/package.json
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+RUN cd /tmp && npm install
+COPY *.js /usr/src/
+
+RUN ln -sf /tmp/node_modules /usr/src/node_modules
+RUN ln -sf /tmp/package.json /usr/src/package.json
+
+# Run
+CMD [ "node", "/usr/src/index.js" ]
