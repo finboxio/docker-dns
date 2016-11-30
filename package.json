@@ -1,6 +1,6 @@
 {
   "name": "docker-dns",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "nodejs dns proxy with dockerfile",
   "main": "index.js",
   "scripts": {
